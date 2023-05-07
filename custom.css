@@ -1,0 +1,128 @@
+
+:root {
+    --gray: #c8c8c8;
+    --darkgray: #848484;
+    --turquoise: #018281;
+    --blue: #173ebe;
+    --radius: 0rem;
+<!-- 0.2 rem;
+-->
+}
+
+body {
+    font-family: "VT323", sans-serif;
+}
+
+.text-gray {
+    color: var(--gray);
+}
+
+.bg-gray {
+    background-color: var(--gray);
+}
+
+.bg-darkgray {
+    background-color: var(--darkgray);
+}
+
+.bg-turquoise {
+    background-color: var(--turquoise);
+}
+
+.bg-blue {
+    background-color: var(--blue);
+}
+
+.border-over {
+    border: 1px solid #fafafa;
+    border-right-color: #212121;
+    border-bottom-color: #212121;
+    border-radius: var(--radius);
+}
+
+.border-under {
+    border: 1px solid #212121;
+    border-right-color: #fafafa;
+    border-bottom-color: #fafafa;
+    border-radius: var(--radius);
+}
+
+.img-fluid-h {
+    max-height: 100%;
+    width: auto;
+}
+
+.text-vertical {
+    writing-mode: vertical-lr;
+    transform: rotate(-180deg);
+    text-align: center;
+}
+
+.size-48 {
+    max-width: 48px;
+    max-height: 48px;
+    width: 48px;
+    height: 48px;
+    min-height: 48px;
+    min-width: 48px;
+}
+
+.size-32 {
+    max-width: 32px;
+    max-height: 32px;
+    width: 32px;
+    height: 32px;
+    min-height: 32px;
+    min-width: 32px;
+}
+
+.size-16 {
+    max-width: 16px;
+    max-height: 16px;
+    width: 16px;
+    height: 16px;
+    min-height: 16px;
+    min-width: 16px;
+}
+
+.size-12 {
+    max-width: 12px;
+    max-height: 12px;
+    width: 12px;
+    height: 12px;
+    min-height: 12px;
+    min-width: 12px;
+}
+
+.height-3 {
+    height: 70vh;
+}
+
+.width-3 {
+    width: 70vw;
+}
+
+/*:hover[onclick], :hover[ondblclick] {
+    opacity: 0.75;
+    transform: scale(1.1);
+}*/
+
+button:hover {
+    opacity: 0.9;
+    transform: scale(1.1);
+}
+
+.window-maximized {
+    width: 100%;
+    height: 100%;
+    left: 0 !important;
+    top: 0 !important;
+}
+
+.window-minimized {
+    display: none !important;
+}
+
+img {
+    pointer-events: none;
+}
