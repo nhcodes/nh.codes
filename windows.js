@@ -3,7 +3,7 @@
 //todo fix event.stopPropagation
 function getWindowHtml(application) {
     return `
-            <div class="d-flex flex-column bg-gray border-over position-absolute top-50 start-50 translate-middle z-2 mh-100" onclick="onClickWindow('${application.id}')">
+            <div class="d-flex flex-column bg-gray border-over position-absolute top-50 start-50 translate-middle z-2 mh-100 col-12 col-sm-10 col-md-8 col-lg-6" onclick="onClickWindow('${application.id}')">
 
                 <div class="d-flex flex-row bg-blue align-items-center m-1 p-1 border-under">
 
@@ -61,29 +61,64 @@ function getPortfolioWindowHtml() {
         <div class="list-group list-group-flush text-wrap">
             <div class="list-group-item list-group-item-action d-flex flex-row align-items-center">
                 <img src="img/letter.ico" class="size-32 m-1 me-3"/>
-                <div class="d-flex flex-column">
-                    <span class="">tvratin.gs</span>
+                <div class="flex-fill d-flex flex-column">
+                    <span>tvratin.gs</span>
                     <span class="small text-muted">Fullstack Webapplication advanced search for tv shows and episodes and episode rating heatmap generation</span>
-                    <span class="small text-muted">Technologies: Java, SQLite, HTML, Bootstrap, Javascript</span>
-                    <button class="btn btn-link link-secondary" onclick="" title="view code on github">
+                    <div>
+                        <span class="badge text-bg-primary">Java</span>
+                        <span class="badge text-bg-primary">SQLite</span>
+                        <span class="badge text-bg-primary">HTML</span>
+                        <span class="badge text-bg-primary">Javascript</span>
+                        <span class="badge text-bg-primary">Bootstrap</span>
+                    </div>
+                </div>
+                <div class="d-flex flex-column">
+                    <a href="https://tvratin.gs" target="_blank" title="preview" class="my-1">
+                        <img src="img/program.ico">
+                    </a>
+                    <a href="https://github.com/nhcodes/tvratings-frontend" target="_blank" title="view code on github" class="my-1">
                         <img src="img/github.ico">
-                    </button>
+                    </a>
                 </div>
             </div>
             <div class="list-group-item list-group-item-action d-flex flex-row align-items-center">
                 <img src="img/letter.ico" class="size-32 m-1 me-3"/>
-                <div class="d-flex flex-column">
-                    <span class="">nh.codes</span>
+                <div class="flex-fill d-flex flex-column">
+                    <span>nh.codes</span>
                     <span class="small text-muted">My personal website - the page you're currently on</span>
-                    <span class="small text-muted">Technologies: HTML, Bootstrap, Javascript</span>
+                    <div>
+                        <span class="badge text-bg-primary">HTML</span>
+                        <span class="badge text-bg-primary">Javascript</span>
+                        <span class="badge text-bg-primary">CSS</span>
+                        <span class="badge text-bg-primary">Bootstrap</span>
+                    </div>
+                </div>
+                <div class="d-flex flex-column">
+                    <a href="https://nh.codes" target="_blank" title="preview" class="my-1">
+                        <img src="img/program.ico">
+                    </a>
+                    <a href="https://github.com/nhcodes/nh.codes" target="_blank" title="view code on github" class="my-1">
+                        <img src="img/github.ico">
+                    </a>
                 </div>
             </div>
             <div class="list-group-item list-group-item-action d-flex flex-row align-items-center">
                 <img src="img/letter.ico" class="size-32 m-1 me-3"/>
+                <div class="flex-fill d-flex flex-column">
+                    <span>iTube</span>
+                    <span class="small text-muted">YouTube Downloader for Android including MediaPlayer</span>
+                    <div>
+                        <span class="badge text-bg-primary">Kotlin</span>
+                        <span class="badge text-bg-primary">Jetpack Compose</span>
+                    </div>
+                </div>
                 <div class="d-flex flex-column">
-                    <span class="">nh.codes</span>
-                    <span class="small text-muted">My personal website - the page you're currently on</span>
-                    <span class="small text-muted">Technologies: HTML, Bootstrap, Javascript</span>
+                    <a href="https://github.com/nhcodes/iTube/raw/main/preview.gif" target="_blank" title="preview" class="my-1">
+                        <img src="img/program.ico">
+                    </a>
+                    <a href="https://github.com/nhcodes/iTube" target="_blank" title="view code on github" class="my-1">
+                        <img src="img/github.ico">
+                    </a>
                 </div>
             </div>
         </div>
@@ -109,7 +144,7 @@ class Application {
 
 class WindowApplication extends Application {
 
-    constructor(id, title, iconPath, contentHtml, action = () => {}) {
+    constructor(id, title, iconPath, action, contentHtml) {
         super(id, title, iconPath, action);
         this.contentHtml = contentHtml;
         this.windowElement = undefined;
@@ -203,7 +238,7 @@ class ButtonApplication extends Application {
 
 class LinkApplication extends Application {
 
-    constructor(id, title, iconPath, url, action) {
+    constructor(id, title, iconPath, action, url) {
         super(id, title, iconPath, action);
         this.url = url;
     }
@@ -213,16 +248,18 @@ class LinkApplication extends Application {
 //js
 
 const applications = [
-    new WindowApplication("bin", "Recycle Bin", "img/recycle_bin.ico", "<span class='m-5 text-center'>0 objects</span>"),
-    new LinkApplication("pc", "My Computer", "img/computer.ico", "https://nh.codes/"),
-    new WindowApplication("portfolio", "My Portfolio", "img/briefcase.ico", getPortfolioWindowHtml()),
-    new WindowApplication("folder", "Some Folder", "img/folder.ico", "<span>lorem ipsum</span>"),
-    new WindowApplication("mail", "Mail", "img/letter.ico", "<a class='m-5 user-select-all' href='mailto:contact@nh.codes'>contact@nh.codes</a>"),
-    new LinkApplication("github", "Github", "img/github.ico", "https://github.com/nhcodes"),
-    new ButtonApplication("playstore", "Play Store", "img/playstore.ico", () => {
-        alert("todo");
+    new WindowApplication("bin", "Recycle Bin", "img/recycle_bin.ico", () => {}, "<span class='m-5 text-center'>0 objects</span>"),
+    new ButtonApplication("pc", "My Computer", "img/computer.ico", () => {
+        showToast("Info", "This application currently does nothing.")
     }),
-    new LinkApplication("stackoverflow", "Stack Overflow", "img/stackoverflow.ico", "https://stackoverflow.com/users/10570201"),
+    new WindowApplication("portfolio", "My Portfolio", "img/briefcase.ico", () => {}, getPortfolioWindowHtml()),
+    new WindowApplication("folder", "Some Folder", "img/folder.ico", () => {}, "<span class='m-5 text-center'>lorem ipsum</span>"),
+    new WindowApplication("email", "Email", "img/letter.ico", () => {}, "<a class='m-5 user-select-all text-center' href='mailto:contact@nh.codes'>contact@nh.codes</a>"),
+    new LinkApplication("github", "Github", "img/github.ico", () => {}, "https://github.com/nhcodes"),
+    new ButtonApplication("playstore", "Play Store", "img/playstore.ico", () => {
+        showToast("Info", "Coming soon.")
+    }),
+    new LinkApplication("stackoverflow", "Stack Overflow", "img/stackoverflow.ico", () => {}, "https://stackoverflow.com/users/10570201"),
     /*
     new WindowApplication("flappy", "Flappy Bird", "img/flappybird.png", getFlappyBirdHtml(), () => {
         startFlappyBird()
@@ -235,7 +272,7 @@ const applications = [
 function initApplications(desktopElement) {
     for (const application of applications) {
         let iconElement = parseElement(getIconHtml(application));
-        makeDraggable(iconElement);
+        //makeDraggable(iconElement);
         desktopElement.append(iconElement);
     }
 }
