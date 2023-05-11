@@ -120,6 +120,8 @@
     const desktopElement = document.querySelector("#DESKTOP");
     const taskbarElement = document.querySelector("#TASKBAR");
 
+    desktopElement.scrollTop = desktopElement.scrollHeight; //todo android fix, test if works
+
     initApplications(desktopElement);
 
     enableSelectRectangle(desktopElement);
