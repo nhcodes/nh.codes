@@ -18,6 +18,7 @@ function makeDraggable(element) {
 
         document.documentElement.onmouseup = (upEvent) => {
             document.documentElement.onmousemove = null;
+            document.documentElement.onmouseup = null;
             element.onmouseup = null;
         };
 

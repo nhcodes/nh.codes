@@ -30,6 +30,7 @@ function enableSelectRectangle(element) {
 
         document.documentElement.onmouseup = (upEvent) => {
             document.documentElement.onmousemove = null;
+            document.documentElement.onmouseup = null;
             element.onmouseup = null;
             selectorElement.remove();
             selectorElement = null;
