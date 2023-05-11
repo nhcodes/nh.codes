@@ -255,6 +255,7 @@ const applications = [
     new WindowApplication("portfolio", "My Portfolio", "img/briefcase.ico", () => {}, getPortfolioWindowHtml()),
     new WindowApplication("folder", "Some Folder", "img/folder.ico", () => {}, "<span class='m-5 text-center'>lorem ipsum</span>"),
     new WindowApplication("email", "Email", "img/letter.ico", () => {}, "<a class='m-5 user-select-all text-center' href='mailto:contact@nh.codes'>contact@nh.codes</a>"),
+    new WindowApplication("welcome", "Welcome", "img/help.ico", () => {}, "<span class='m-5 text-center'>hello world</span>"),
     new LinkApplication("github", "Github", "img/github.ico", () => {}, "https://github.com/nhcodes"),
     new ButtonApplication("playstore", "Play Store", "img/playstore.ico", () => {
         showToast("Info", "Coming soon.")
@@ -275,6 +276,7 @@ function initApplications(desktopElement) {
         //makeDraggable(iconElement);
         desktopElement.append(iconElement);
     }
+    getApplicationById("welcome").openWindow();
 }
 
 function getApplicationById(applicationId) {
