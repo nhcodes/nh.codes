@@ -74,7 +74,7 @@
 
         <button class="d-flex flex-row align-items-center m-1 p-1 bg-gray border-over"
                 onclick="onClickStartButton(this)">
-            <img src="img/windows.ico" alt="Icon for Start" class="size-16">
+            <img src="img/windows.ico" alt="Icon for Start" class="size-24">
             <span class="ms-1">Start</span>
         </button>
 
@@ -101,7 +101,7 @@
 <script>
 
     function onClickStartButton(element) {
-        document.querySelector("#WINDOW_START").classList.toggle("d-none");
+        startWindowElement.classList.toggle("d-none");
         if (!element.classList.replace("border-under", "border-over")) {
             element.classList.replace("border-over", "border-under");
         }
@@ -116,15 +116,15 @@
         timeElement.innerText = timeString;
     }
 
-
     const desktopElement = document.querySelector("#DESKTOP");
     const taskbarElement = document.querySelector("#TASKBAR");
+    const startWindowElement = document.querySelector("#WINDOW_START");
 
     document.body.scrollTop = document.body.scrollHeight; //todo android fix, test if works
 
     initApplications(desktopElement);
 
-    enableSelectRectangle(desktopElement);
+    //enableSelectRectangle(desktopElement);
 </script>
 
 </body>
