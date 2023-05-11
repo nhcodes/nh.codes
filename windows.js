@@ -218,11 +218,11 @@ const applications = [
     new WindowApplication("portfolio", "My Portfolio", "img/briefcase.ico", getPortfolioWindowHtml()),
     new WindowApplication("folder", "Some Folder", "img/folder.ico", "<span>lorem ipsum</span>"),
     new WindowApplication("mail", "Mail", "img/letter.ico", "<a class='m-5 user-select-all' href='mailto:contact@nh.codes'>contact@nh.codes</a>"),
-    new LinkApplication("github", "Github", "img/gh.png", "https://github.com/nhcodes"),
-    new ButtonApplication("playstore", "Play Store", "img/gps.png", () => {
+    new LinkApplication("github", "Github", "img/github.ico", "https://github.com/nhcodes"),
+    new ButtonApplication("playstore", "Play Store", "img/playstore.ico", () => {
         alert("todo");
     }),
-    new LinkApplication("stackoverflow", "Stack Overflow", "img/sof.png", "https://stackoverflow.com/users/10570201"),
+    new LinkApplication("stackoverflow", "Stack Overflow", "img/stackoverflow.ico", "https://stackoverflow.com/users/10570201"),
     /*
     new WindowApplication("flappy", "Flappy Bird", "img/flappybird.png", getFlappyBirdHtml(), () => {
         startFlappyBird()
