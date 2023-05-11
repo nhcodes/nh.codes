@@ -1,8 +1,9 @@
 //html
 
+//todo fix event.stopPropagation
 function getWindowHtml(application) {
     return `
-            <div class="d-flex flex-column bg-gray border-over position-absolute height-3 width-3 z-2" onclick="onClickWindow('${application.id}')">
+            <div class="d-flex flex-column bg-gray border-over position-absolute top-50 start-50 translate-middle z-2 mh-100" onclick="onClickWindow('${application.id}')">
 
                 <div class="d-flex flex-row bg-blue align-items-center m-1 p-1 border-under">
 
@@ -10,13 +11,13 @@ function getWindowHtml(application) {
 
                     <span class="flex-fill text-white text-truncate ms-1">${application.title}</span>
 
-                    <button class="bg-gray p-0 ms-1 border-over size-16" onclick="onClickMinimizeWindow('${application.id}')">
+                    <button class="bg-gray p-0 ms-1 border-over size-16" onclick="event.stopPropagation(); onClickMinimizeWindow('${application.id}')">
                         <img src="img/minimize.ico" class="size-12 m-auto d-block"/>
                     </button>
-                    <button class="bg-gray p-0 ms-1 border-over size-16" onclick="onClickMaximizeWindow('${application.id}')">
+                    <button class="bg-gray p-0 ms-1 border-over size-16" onclick="event.stopPropagation(); onClickMaximizeWindow('${application.id}')">
                         <img src="img/maximize.ico" class="size-12 m-auto d-block"/>
                     </button>
-                    <button class="bg-gray p-0 ms-1 border-over size-16" onclick="onClickCloseWindow('${application.id}')">
+                    <button class="bg-gray p-0 ms-1 border-over size-16" onclick="event.stopPropagation(); onClickCloseWindow('${application.id}')">
                         <img src="img/close.ico" class="size-12 m-auto d-block"/>
                     </button>
 
@@ -40,7 +41,14 @@ function getTaskHtml(application) {
 }
 
 function getIconHtml(application) {
-    return `
+    return (application instanceof LinkApplication) ?
+        `
+            <a class="d-flex flex-column align-items-center p-0 m-2 text-decoration-none" style="width: 100px" href="${application.url}" target="_blank">
+                <img src="${application.iconPath}" alt="Icon for ${application.title}" class="size-48">
+                <div class="text-white text-truncate small">${application.title}</div>
+            </a>
+        ` :
+        `
             <button class="d-flex flex-column align-items-center p-0 m-2 bg-transparent border-0" style="width: 100px" onclick="onClickIcon('${application.id}')">
                 <img src="${application.iconPath}" alt="Icon for ${application.title}" class="size-48">
                 <div class="text-white text-truncate small">${application.title}</div>
@@ -51,33 +59,33 @@ function getIconHtml(application) {
 function getPortfolioWindowHtml() {
     return `
         <div class="list-group list-group-flush text-wrap">
-            <a class="list-group-item list-group-item-action d-flex flex-row align-items-center" href="https://tvratin.gs/" target="_blank">
+            <div class="list-group-item list-group-item-action d-flex flex-row align-items-center">
                 <img src="img/letter.ico" class="size-32 m-1 me-3"/>
                 <div class="d-flex flex-column">
                     <span class="">tvratin.gs</span>
                     <span class="small text-muted">Fullstack Webapplication advanced search for tv shows and episodes and episode rating heatmap generation</span>
                     <span class="small text-muted">Technologies: Java, SQLite, HTML, Bootstrap, Javascript</span>
                     <button class="btn btn-link link-secondary" onclick="" title="view code on github">
-                        <img src="img/github.ico"></img>
+                        <img src="img/github.ico">
                     </button>
                 </div>
-            </a>
-            <a class="list-group-item list-group-item-action d-flex flex-row align-items-center" href="https://tvratin.gs/" target="_blank">
+            </div>
+            <div class="list-group-item list-group-item-action d-flex flex-row align-items-center">
                 <img src="img/letter.ico" class="size-32 m-1 me-3"/>
                 <div class="d-flex flex-column">
                     <span class="">nh.codes</span>
                     <span class="small text-muted">My personal website - the page you're currently on</span>
                     <span class="small text-muted">Technologies: HTML, Bootstrap, Javascript</span>
                 </div>
-            </a>
-            <a class="list-group-item list-group-item-action d-flex flex-row align-items-center" href="https://tvratin.gs/" target="_blank">
+            </div>
+            <div class="list-group-item list-group-item-action d-flex flex-row align-items-center">
                 <img src="img/letter.ico" class="size-32 m-1 me-3"/>
                 <div class="d-flex flex-column">
                     <span class="">nh.codes</span>
                     <span class="small text-muted">My personal website - the page you're currently on</span>
                     <span class="small text-muted">Technologies: HTML, Bootstrap, Javascript</span>
                 </div>
-            </a>
+            </div>
         </div>
     `;
 }
@@ -106,19 +114,17 @@ class WindowApplication extends Application {
         this.contentHtml = contentHtml;
         this.windowElement = undefined;
         this.taskElement = undefined;
-    }
-
-    isWindowOpen() {
-        return (this.windowElement !== undefined || this.taskElement !== undefined);
+        this.isWindowOpen = false;
+        this.isWindowFocused = false;
+        this.isWindowMinimized = false;
+        this.isWindowMaximized = false;
     }
 
     openWindow() {
-        if (this.isWindowOpen()) return;
+        if (this.isWindowOpen) return;
+        this.isWindowOpen = true;
         let windowElement = parseElement(getWindowHtml(this));
-        windowElement.style.left = `${pixelsFromTopLeft}px`;
-        windowElement.style.top = `${pixelsFromTopLeft}px`;
         makeDraggable(windowElement);
-        pixelsFromTopLeft += 25;
         let taskElement = parseElement(getTaskHtml(this));
         this.windowElement = windowElement;
         this.taskElement = taskElement;
@@ -128,6 +134,8 @@ class WindowApplication extends Application {
     }
 
     closeWindow() {
+        if(!this.isWindowOpen) return;
+        this.isWindowOpen = false;
         this.windowElement.remove();
         this.windowElement = undefined;
         this.taskElement.remove();
@@ -135,44 +143,57 @@ class WindowApplication extends Application {
     }
 
     minimizeWindow() {
-        const isMinimized = this.windowElement.classList.toggle("window-minimized");
-        if (isMinimized) {
-            setClasses(this.taskElement, "border-over", "border-under");
-        } else {
-            setClasses(this.taskElement, "border-under", "border-over");
-        }
-        this.focusWindow(!isMinimized);
+        if(this.isWindowMinimized) return;
+        this.isWindowMinimized = true;
+        this.windowElement.classList.add("window-minimized");
+        this.focusWindow(false);
+    }
+
+    unMinimizeWindow() {
+        if(!this.isWindowMinimized) return;
+        this.isWindowMinimized = false;
+        this.windowElement.classList.remove("window-minimized");
+        this.focusWindow(true);
     }
 
     maximizeWindow() {
-        this.windowElement.classList.toggle("window-maximized");
+        if(this.isWindowMaximized) return;
+        this.isWindowMaximized = true;
+        this.windowElement.classList.add("window-maximized");
+    }
+
+    unMaximizeWindow() {
+        if(!this.isWindowMaximized) return;
+        this.isWindowMaximized = false;
+        this.windowElement.classList.remove("window-maximized");
     }
 
     focusWindow(focus) {
-        if (!this.isWindowOpen()) return;
+        if (!this.isWindowOpen) return;
         const taskElement = this.taskElement;
         const windowElement = this.windowElement;
         const windowBarElement = this.windowElement.firstElementChild;
         if (focus) {
-            setClasses(taskElement, "border-under", "border-over");
-            setClasses(windowElement, "z-2", "z-1");
-            setClasses(windowBarElement, "bg-blue", "bg-darkgray");
+            this.isWindowFocused = true;
+            toggleClasses(taskElement, "border-under", "border-over");
+            toggleClasses(windowElement, "z-2", "z-1");
+            toggleClasses(windowBarElement, "bg-blue", "bg-darkgray");
             applications.forEach((application) => {
                 if (application === this) return;
                 if (!(application instanceof WindowApplication)) return;
-                if (!application.isWindowOpen()) return;
                 application.focusWindow(false);
             });
         } else {
-            setClasses(taskElement, "border-over", "border-under");
-            setClasses(windowElement, "z-1", "z-2");
-            setClasses(windowBarElement, "bg-darkgray", "bg-blue");
+            this.isWindowFocused = false;
+            toggleClasses(taskElement, "border-over", "border-under");
+            toggleClasses(windowElement, "z-1", "z-2");
+            toggleClasses(windowBarElement, "bg-darkgray", "bg-blue");
         }
     }
 
 }
 
-class ActionApplication extends Application {
+class ButtonApplication extends Application {
 
     constructor(id, title, iconPath, action) {
         super(id, title, iconPath, action);
@@ -180,32 +201,36 @@ class ActionApplication extends Application {
 
 }
 
+class LinkApplication extends Application {
+
+    constructor(id, title, iconPath, url, action) {
+        super(id, title, iconPath, action);
+        this.url = url;
+    }
+
+}
+
 //js
 
 const applications = [
-    new WindowApplication("bin", "Recycle Bin", "img/recycle_bin.ico", "<span class='m-auto'>0 objects</span>"),
-    new ActionApplication("pc", "My Computer", "img/computer.ico", () => {
-        window.open("https://nh.codes/");
-    }),
+    new WindowApplication("bin", "Recycle Bin", "img/recycle_bin.ico", "<span class='m-5 text-center'>0 objects</span>"),
+    new LinkApplication("pc", "My Computer", "img/computer.ico", "https://nh.codes/"),
     new WindowApplication("portfolio", "My Portfolio", "img/briefcase.ico", getPortfolioWindowHtml()),
     new WindowApplication("folder", "Some Folder", "img/folder.ico", "<span>lorem ipsum</span>"),
-    new WindowApplication("mail", "Mail", "img/letter.ico", "<a class='m-auto user-select-all' href='mailto:contact@nhcodes.com'>contact@nhcodes.com</a>"),
-    new ActionApplication("github", "Github", "img/github.ico", () => {
-        window.open("https://github.com/nhcodes");
-    }),
-    new ActionApplication("playstore", "Play Store", "img/playstore.ico", () => {
+    new WindowApplication("mail", "Mail", "img/letter.ico", "<a class='m-5 user-select-all' href='mailto:contact@nh.codes'>contact@nh.codes</a>"),
+    new LinkApplication("github", "Github", "img/gh.png", "https://github.com/nhcodes"),
+    new ButtonApplication("playstore", "Play Store", "img/gps.png", () => {
         alert("todo");
     }),
+    new LinkApplication("stackoverflow", "Stack Overflow", "img/sof.png", "https://stackoverflow.com/users/10570201"),
     /*
     new WindowApplication("flappy", "Flappy Bird", "img/flappybird.png", getFlappyBirdHtml(), () => {
         startFlappyBird()
     }),
-    new ActionApplication("rps", "RockPaperScissors", "img/rock_paper_scissors.ico", () => {
+    new ButtonApplication("rps", "RockPaperScissors", "img/rock_paper_scissors.ico", () => {
         startRockPaperScissors();
     }),*/
 ];
-
-let pixelsFromTopLeft = 50;
 
 function initApplications(desktopElement) {
     for (const application of applications) {
@@ -223,17 +248,22 @@ function getApplicationById(applicationId) {
 
 function onClickIcon(applicationId) {
     let application = getApplicationById(applicationId);
-    if (application instanceof ActionApplication) {
-        application.doAction();
-    } else if (application instanceof WindowApplication) {
+    if (application instanceof WindowApplication) {
         application.openWindow();
-        application.doAction();
     }
+    application.doAction();
 }
 
 function onClickTask(applicationId) {
     let application = getApplicationById(applicationId);
-    application.focusWindow(true);
+    if(application.isWindowMinimized) {
+        application.unMinimizeWindow();
+    }/* else {
+        application.minimizeWindow();
+    }*/
+    if(!application.isWindowFocused) {
+        application.focusWindow(true);
+    }
 }
 
 function onClickWindow(applicationId) {
@@ -243,12 +273,20 @@ function onClickWindow(applicationId) {
 
 function onClickMinimizeWindow(applicationId) {
     let application = getApplicationById(applicationId);
-    application.minimizeWindow();
+    if(application.isWindowMinimized) {
+        application.unMinimizeWindow();
+    } else {
+        application.minimizeWindow();
+    }
 }
 
 function onClickMaximizeWindow(applicationId) {
     let application = getApplicationById(applicationId);
-    application.maximizeWindow();
+    if(application.isWindowMaximized) {
+        application.unMaximizeWindow();
+    } else {
+        application.maximizeWindow();
+    }
 }
 
 function onClickCloseWindow(applicationId) {
