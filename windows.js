@@ -127,10 +127,10 @@ function getPortfolioWindowHtml() {
 
 function getWelcomeWindowHtml() {
     return `
-        <div class="d-flex flex-column p-3 bg-gray">
+        <div class="d-flex flex-column p-3">
             <h3 class="">Hello world!</h3>
             <span class="text-wrap">Welcome to my website, which is inspired by Windows 95. Feel free to explore my portfolio, connect with me on social media, or send me an email.<br><br>Best regards,<br> Nick</span>
-            <button class="bg-gray mx-auto border-over" onclick="getApplicationById('welcome').closeWindow()">OK</button>
+            <button class="bg-gray border-over mx-auto my-1" onclick="getApplicationById('welcome').closeWindow()">OK</button>
         </div>
     `;
 }
