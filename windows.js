@@ -3,7 +3,7 @@
 //todo fix event.stopPropagation
 function getWindowHtml(application) {
     return `
-            <div class="d-flex flex-column bg-gray border-over position-absolute top-50 start-50 translate-middle z-2 mh-100 col-12 col-sm-10 col-md-8 col-lg-6" onclick="onClickWindow('${application.id}')">
+            <div class="d-flex flex-column bg-gray border-over position-absolute top-50 start-50 translate-middle z-5 mh-100 col-12 col-sm-10 col-md-8 col-lg-6" onclick="onClickWindow('${application.id}')">
 
                 <div class="d-flex flex-row bg-blue align-items-center m-1 p-1 border-under">
 
@@ -43,13 +43,13 @@ function getTaskHtml(application) {
 function getIconHtml(application) {
     return (application instanceof LinkApplication) ?
         `
-            <a class="d-flex flex-column align-items-center p-0 m-2 text-decoration-none" style="width: 100px" href="${application.url}" target="_blank">
+            <a class="d-flex flex-column align-items-center p-0 m-2 text-decoration-none z-4" style="width: 100px" href="${application.url}" target="_blank">
                 <img src="${application.iconPath}" alt="Icon for ${application.title}" class="size-48">
                 <div class="text-white text-truncate small">${application.title}</div>
             </a>
         ` :
         `
-            <button class="d-flex flex-column align-items-center p-0 m-2 bg-transparent border-0" style="width: 100px" onclick="onClickIcon('${application.id}')">
+            <button class="d-flex flex-column align-items-center p-0 m-2 bg-transparent border-0 z-4" style="width: 100px" onclick="onClickIcon('${application.id}')">
                 <img src="${application.iconPath}" alt="Icon for ${application.title}" class="size-48">
                 <div class="text-white text-truncate small">${application.title}</div>
             </button>
@@ -166,7 +166,10 @@ class WindowApplication extends Application {
     }
 
     openWindow() {
-        if (this.isWindowOpen) return;
+        if (this.isWindowOpen) {
+            this.focusWindow(true);
+            return;
+        }
         this.isWindowOpen = true;
         let windowElement = parseElement(getWindowHtml(this));
         makeDraggable(windowElement);
@@ -221,7 +224,7 @@ class WindowApplication extends Application {
         if (focus) {
             this.isWindowFocused = true;
             toggleClasses(taskElement, "border-under", "border-over");
-            toggleClasses(windowElement, "z-2", "z-1");
+            toggleClasses(windowElement, "z-5", "z-4");
             toggleClasses(windowBarElement, "bg-blue", "bg-darkgray");
             applications.forEach((application) => {
                 if (application === this) return;
@@ -231,7 +234,7 @@ class WindowApplication extends Application {
         } else {
             this.isWindowFocused = false;
             toggleClasses(taskElement, "border-over", "border-under");
-            toggleClasses(windowElement, "z-1", "z-2");
+            toggleClasses(windowElement, "z-4", "z-5");
             toggleClasses(windowBarElement, "bg-darkgray", "bg-blue");
         }
     }
