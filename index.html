@@ -58,7 +58,7 @@
 
                 <hr class="m-0 mt-auto">
 
-                <button class="d-flex flex-row align-items-center p-2 bg-gray border-0" onclick="window.close()">
+                <button class="d-flex flex-row align-items-center p-2 bg-gray border-0" onclick="onClickShutdown()">
                     <img src="img/shutdown.ico" class="size-32 m-1"/>
                     <span class="fs-6 ms-1">Shut Down</span>
                 </button>
@@ -101,12 +101,24 @@
 
 <script>
 
+    //
+
     function onClickStartButton(element) {
         startWindowElement.classList.toggle("d-none");
         if (!element.classList.replace("border-under", "border-over")) {
             element.classList.replace("border-over", "border-under");
         }
     }
+
+    function onClickShutdown() {
+        document.documentElement.style.opacity = '0%';
+    }
+
+    document.documentElement.addEventListener("click", (event) => {
+        document.documentElement.style.removeProperty("opacity");
+    }, true);
+
+    //
 
     const timeElement = document.querySelector("#TIME");
     updateTime();
@@ -116,6 +128,8 @@
         const timeString = new Date().toLocaleTimeString(undefined, {});//{timeStyle: "short"}
         timeElement.innerText = timeString;
     }
+
+    //
 
     const desktopElement = document.querySelector("#DESKTOP");
     const taskbarElement = document.querySelector("#TASKBAR");
