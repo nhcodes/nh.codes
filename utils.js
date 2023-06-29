@@ -16,13 +16,3 @@ function toggleClasses(element, classToAdd, classToRemove) {
     element.classList.add(classToAdd);
     element.classList.remove(classToRemove);
 }
-
-function parseElement(html) {
-    return parseElements(html)[0];
-}
-
-function parseElements(html) {
-    let div = document.createElement("div");
-    div.innerHTML = html;
-    return div.children;
-}
