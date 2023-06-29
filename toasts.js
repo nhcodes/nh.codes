@@ -1,6 +1,6 @@
 function getToastHtml(title, content) {
     return `
-        <div class="toast position-absolute top-0 start-50 translate-middle-x border-over mt-2">
+        <div class="toast position-absolute top-0 start-50 translate-middle-x border-over mt-2 z-7">
             <div class="toast-header">
                 <img src="img/warning.ico" class="size-16">
                 <strong class="ms-2 me-auto">${title}</strong>
