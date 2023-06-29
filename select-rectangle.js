@@ -1,6 +1,6 @@
 function getSelectRectangleHtml() {
     return `
-        <div style="position: absolute; border: 1px dotted #000; background-color: rgba(255, 255, 255, 0.3)"></div>
+        <div style="position: absolute; border: 1px dotted #000; background-color: rgba(255, 255, 255, 0.3); pointer-events: none"></div>
     `;
 }
 
